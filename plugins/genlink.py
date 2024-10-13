@@ -20,6 +20,70 @@ from plugins.users_api import get_user, get_short_link
 import base64
 import os
 
+
+#Big Changes
+
+# Function to send file with a thumbnail
+async def send_file_with_thumbnail(bot, message, file, caption, thumbnail):
+    await bot.send_document(
+        chat_id=message.chat.id,
+        document=file,
+        thumb=thumbnail,  # Attach the thumbnail here
+        caption=caption
+    )
+
+# Function to generate thumbnail path (can customize based on file type)
+def get_thumbnail(file_type):
+    # You can customize thumbnail logic here, or set a default thumbnail
+    default_thumbnail = "/path/to/default_thumbnail.jpg"
+    
+    # Example logic to set custom thumbnails based on file type
+    if file_type == enums.MessageMediaType.VIDEO:
+        return "/path/to/video_thumbnail.jpg"
+    elif file_type == enums.MessageMediaType.AUDIO:
+        return "/path/to/audio_thumbnail.jpg"
+    elif file_type == enums.MessageMediaType.DOCUMENT:
+        return "/path/to/document_thumbnail.jpg"
+    
+    return default_thumbnail
+
+# Modified incoming_gen_link to handle file links with thumbnails
+@Client.on_message((filters.document | filters.video | filters.audio) & filters.private & filters.create(allowed))
+async def incoming_gen_link(bot, message):
+    username = (await bot.get_me()).username
+    file_type = message.media
+    file_id, ref = unpack_new_file_id((getattr(message, file_type.value)).file_id)
+    
+    # Base64 encode the file ID
+    string = 'file_'
+    string += file_id
+    outstr = base64.urlsafe_b64encode(string.encode("ascii")).decode().strip("=")
+
+    # Get the user
+    user_id = message.from_user.id
+    user = await get_user(user_id)
+
+    # Generate the file link
+    if WEBSITE_URL_MODE:
+        share_link = f"{WEBSITE_URL}?Tech_VJ={outstr}"
+    else:
+        share_link = f"https://t.me/{username}?start={outstr}"
+
+    # Get short link if applicable
+    if user["base_site"] and user["shortener_api"] is not None:
+        short_link = await get_short_link(user, share_link)
+        share_link_text = f"🖇️ Short link: {short_link}"
+    else:
+        share_link_text = f"🔗 Original link: {share_link}"
+
+    # Get a thumbnail for the file
+    thumbnail = get_thumbnail(file_type)
+
+    # Send the file with a thumbnail and link
+    await send_file_with_thumbnail(bot, message, file_id, f"<b>⭕ Here is your link:\n\n{share_link_text}</b>", thumbnail)
+
+# The rest of the code follows as in the original script...
+
 #My Changes
 
 def get_thumbnail(file_type):
