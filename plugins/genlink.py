@@ -14,6 +14,28 @@ import json
 import base64
 import logging
 
+#My Changes
+
+def get_thumbnail(file_type):
+    if file_type == enums.MessageMediaType.VIDEO:
+        return "/path/to/video_thumbnail.jpg"
+    elif file_type == enums.MessageMediaType.AUDIO:
+        return "/path/to/audio_thumbnail.jpg"
+    return "/path/to/default_thumbnail.jpg"
+
+async def send_file_with_thumbnail(bot, message, file, caption, thumbnail):
+    await bot.send_document(
+        chat_id=message.chat.id,
+        document=file,
+        thumb=thumbnail,  # Attach the thumbnail here
+        caption=caption
+    )
+
+thumbnail = get_thumbnail(file_type)
+await send_file_with_thumbnail(bot, message, file_id, f"<b>Your link: {share_link}</b>", thumbnail)
+
+#small changes
+
 # Don't Remove Credit Tg - @VJ_Botz
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
 # Ask Doubt on telegram @KingVJ01
