@@ -1,7 +1,3 @@
-# Don't Remove Credit @VJ_Botz
-# Subscribe YouTube Channel For Amazing Bot @Tech_VJ
-# Ask Doubt on telegram @KingVJ01
-
 import re
 from pyrogram import filters, Client, enums
 from pyrogram.errors.exceptions.bad_request_400 import ChannelInvalid, UsernameInvalid, UsernameNotModified
@@ -13,98 +9,6 @@ import os
 import json
 import base64
 import logging
-from pyrogram import Client, filters, enums
-from config import ADMINS, LOG_CHANNEL, PUBLIC_FILE_STORE, WEBSITE_URL, WEBSITE_URL_MODE
-from plugins.database import unpack_new_file_id
-from plugins.users_api import get_user, get_short_link
-import base64
-import os
-
-
-#Big Changes
-
-# Function to send file with a thumbnail
-async def send_file_with_thumbnail(bot, message, file, caption, thumbnail):
-    await bot.send_document(
-        chat_id=message.chat.id,
-        document=file,
-        thumb=thumbnail,  # Attach the thumbnail here
-        caption=caption
-    )
-
-# Function to generate thumbnail path (can customize based on file type)
-def get_thumbnail(file_type):
-    # You can customize thumbnail logic here, or set a default thumbnail
-    default_thumbnail = "/path/to/default_thumbnail.jpg"
-    
-    # Example logic to set custom thumbnails based on file type
-    if file_type == enums.MessageMediaType.VIDEO:
-        return "/path/to/video_thumbnail.jpg"
-    elif file_type == enums.MessageMediaType.AUDIO:
-        return "/path/to/audio_thumbnail.jpg"
-    elif file_type == enums.MessageMediaType.DOCUMENT:
-        return "/path/to/document_thumbnail.jpg"
-    
-    return default_thumbnail
-
-# Modified incoming_gen_link to handle file links with thumbnails
-@Client.on_message((filters.document | filters.video | filters.audio) & filters.private & filters.create(allowed))
-async def incoming_gen_link(bot, message):
-    username = (await bot.get_me()).username
-    file_type = message.media
-    file_id, ref = unpack_new_file_id((getattr(message, file_type.value)).file_id)
-    
-    # Base64 encode the file ID
-    string = 'file_'
-    string += file_id
-    outstr = base64.urlsafe_b64encode(string.encode("ascii")).decode().strip("=")
-
-    # Get the user
-    user_id = message.from_user.id
-    user = await get_user(user_id)
-
-    # Generate the file link
-    if WEBSITE_URL_MODE:
-        share_link = f"{WEBSITE_URL}?Tech_VJ={outstr}"
-    else:
-        share_link = f"https://t.me/{username}?start={outstr}"
-
-    # Get short link if applicable
-    if user["base_site"] and user["shortener_api"] is not None:
-        short_link = await get_short_link(user, share_link)
-        share_link_text = f"🖇️ Short link: {short_link}"
-    else:
-        share_link_text = f"🔗 Original link: {share_link}"
-
-    # Get a thumbnail for the file
-    thumbnail = get_thumbnail(file_type)
-
-    # Send the file with a thumbnail and link
-    await send_file_with_thumbnail(bot, message, file_id, f"<b>⭕ Here is your link:\n\n{share_link_text}</b>", thumbnail)
-
-# The rest of the code follows as in the original script...
-
-#My Changes
-
-def get_thumbnail(file_type):
-    if file_type == enums.MessageMediaType.VIDEO:
-        return "/path/to/video_thumbnail.jpg"
-    elif file_type == enums.MessageMediaType.AUDIO:
-        return "/path/to/audio_thumbnail.jpg"
-    return "/path/to/default_thumbnail.jpg"
-
-async def send_file_with_thumbnail(bot, message, file, caption, thumbnail):
-    await bot.send_document(
-        chat_id=message.chat.id,
-        document=file,
-        thumb=thumbnail,  # Attach the thumbnail here
-        caption=caption
-    )
-
-thumbnail = get_thumbnail(file_type)
-await send_file_with_thumbnail(bot, message, file_id, f"<b>Your link: {share_link}</b>", thumbnail)
-
-#small changes
 
 # Don't Remove Credit Tg - @VJ_Botz
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
@@ -143,7 +47,7 @@ async def incoming_gen_link(bot, message):
         await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🖇️ sʜᴏʀᴛ ʟɪɴᴋ :- {short_link}</b>")
     else:
         await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🔗 ᴏʀɪɢɪɴᴀʟ ʟɪɴᴋ :- {share_link}</b>")
-        
+
 
 @Client.on_message(filters.command(['link', 'plink']) & filters.create(allowed))
 async def gen_link_s(bot, message):
@@ -160,7 +64,7 @@ async def gen_link_s(bot, message):
 # Don't Remove Credit Tg - @VJ_Botz
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
 # Ask Doubt on telegram @KingVJ01
-    
+
     file_id, ref = unpack_new_file_id((getattr(replied, file_type.value)).file_id)
     string = 'filep_' if message.text.lower().strip() == "/plink" else 'file_'
     string += file_id
@@ -176,7 +80,7 @@ async def gen_link_s(bot, message):
         await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🖇️ sʜᴏʀᴛ ʟɪɴᴋ :- {short_link}</b>")
     else:
         await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🔗 ᴏʀɪɢɪɴᴀʟ ʟɪɴᴋ :- {share_link}</b>")
-        
+
 
 # Don't Remove Credit Tg - @VJ_Botz
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
@@ -203,7 +107,7 @@ async def gen_link_batch(bot, message):
 # Don't Remove Credit Tg - @VJ_Botz
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
 # Ask Doubt on telegram @KingVJ01
-    
+
     match = regex.match(last)
     if not match:
         return await message.reply('Invalid link')
@@ -226,7 +130,7 @@ async def gen_link_batch(bot, message):
 # Don't Remove Credit Tg - @VJ_Botz
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
 # Ask Doubt on telegram @KingVJ01
-    
+
     sts = await message.reply("**ɢᴇɴᴇʀᴀᴛɪɴɢ ʟɪɴᴋ ғᴏʀ ʏᴏᴜʀ ᴍᴇssᴀɢᴇ**.\n**ᴛʜɪs ᴍᴀʏ ᴛᴀᴋᴇ ᴛɪᴍᴇ ᴅᴇᴘᴇɴᴅɪɴɢ ᴜᴘᴏɴ ɴᴜᴍʙᴇʀ ᴏғ ᴍᴇssᴀɢᴇs**")
 
     FRMT = "**ɢᴇɴᴇʀᴀᴛɪɴɢ ʟɪɴᴋ...**\n**ᴛᴏᴛᴀʟ ᴍᴇssᴀɢᴇs:** {total}\n**ᴅᴏɴᴇ:** {current}\n**ʀᴇᴍᴀɪɴɪɴɢ:** {rem}\n**sᴛᴀᴛᴜs:** {sts}"
@@ -291,8 +195,3 @@ async def gen_link_batch(bot, message):
         await sts.edit(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\nContains `{og_msg}` files.\n\n🖇️ sʜᴏʀᴛ ʟɪɴᴋ :- {short_link}</b>")
     else:
         await sts.edit(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\nContains `{og_msg}` files.\n\n🔗 ᴏʀɪɢɪɴᴀʟ ʟɪɴᴋ :- {share_link}</b>")
-        
-# Don't Remove Credit Tg - @VJ_Botz
-# Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
-# Ask Doubt on telegram @KingVJ01
-
