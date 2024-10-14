@@ -22,9 +22,9 @@ API_ID = int(environ.get("API_ID", "24979349"))
 API_HASH = environ.get("API_HASH", "ceef50502546a4ecdab59551496c4d57")
 BOT_TOKEN = environ.get("BOT_TOKEN", "")
 
-PICS = (environ.get('PICS', 'https://ibb.co/tx4hS70')).split() # Bot Start Picture
+PICS = (environ.get('PICS', 'https://ibb.co/sK1ZxKs')).split() # Bot Start Picture
 ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '6295345515').split()]
-BOT_USERNAME = environ.get("BOT_USERNAME", "Rexonhubbot") # without @
+BOT_USERNAME = environ.get("BOT_USERNAME", "deshi_dhaba") # without @
 PORT = environ.get("PORT", "8080")
 
 # Clone Info :-
@@ -46,7 +46,7 @@ AUTO_DELETE = int(environ.get("AUTO_DELETE", "10")) # Time in Minutes
 AUTO_DELETE_TIME = int(environ.get("AUTO_DELETE_TIME", "600")) # Time in Seconds
 
 # Channel Information
-LOG_CHANNEL = int(environ.get("LOG_CHANNEL", "-1002105718537"))
+LOG_CHANNEL = int(environ.get("LOG_CHANNEL", "-1002372684889"))
 
 # File Caption Information
 CUSTOM_FILE_CAPTION = environ.get("CUSTOM_FILE_CAPTION", f"{script.CAPTION}")
@@ -64,7 +64,7 @@ SHORTLINK_API = environ.get("SHORTLINK_API", "0da405cf25079ea7b97d4095248439d88d
 VERIFY_TUTORIAL = environ.get("VERIFY_TUTORIAL", "https://t.me/rexonblacksupport/1309") # how to open link 
 
 # Website Info:
-WEBSITE_URL_MODE = bool(environ.get('WEBSITE_URL_MODE', True)) # Set True or False
+WEBSITE_URL_MODE = bool(environ.get('WEBSITE_URL_MODE', False)) # Set True or False
 
 # If Website Url Mode Is True Then Fill All Required Variable, If False Then Don't Fill.
 WEBSITE_URL = environ.get("WEBSITE_URL", "https://rexonblack.blogspot.com/2024/10/rexon-black.html") # For More Information Check Video On Yt - @Tech_VJ
